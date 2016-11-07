@@ -29,3 +29,11 @@ Run `ng github-pages:deploy` to deploy to Github Pages.
 ## Further help
 
 To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+
+## References
+
+- https://snazzymaps.com/style/38/shades-of-grey
+- https://angular-maps.com/docs/getting-started.html
+-
