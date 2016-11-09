@@ -7,8 +7,8 @@
     {
       "root": "src",
       "outDir": "dist",
-      "assets": "assets",
-      "index": "index.html",
+      "assets": ["assets","index.html", "auth.html"],
+      "index": "dashboard.html",
       "main": "main.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
