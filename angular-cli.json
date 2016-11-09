@@ -7,7 +7,7 @@
     {
       "root": "src",
       "outDir": "dist",
-      "assets": ["assets","index.html", "auth.html"],
+      "assets": ["assets","index.html", "auth/connect.html", "auth/callback.html"],
       "index": "dashboard.html",
       "main": "main.ts",
       "test": "test.ts",
