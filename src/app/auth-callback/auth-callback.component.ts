@@ -18,7 +18,7 @@ export class AuthCallbackComponent implements OnInit {
     console.log(this.activatedRoute.snapshot.params);
     console.log(this.activatedRoute.snapshot.queryParams);
 
-    this.apiService.callbackWithToken(this.activatedRoute.params['serviceType'], this.activatedRoute.snapshot.queryParams)
+    this.apiService.callbackWithToken(this.activatedRoute.snapshot.params['serviceType'], this.activatedRoute.snapshot.queryParams)
         .subscribe(
             data => console.log(data),
             error => console.log(error)
