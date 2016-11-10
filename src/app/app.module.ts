@@ -31,7 +31,7 @@ import { ApiService } from './api.service'
     }),
     RouterModule.forRoot([
       { path: 'auth/connect', component: AuthConnectComponent },
-      { path: 'auth/callback', component: AuthCallbackComponent },
+      { path: 'auth/callback/:serviceType', component: AuthCallbackComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: '', pathMatch: 'full', redirectTo: '/' },
       // { path: '**', component: PageNotFoundComponent }

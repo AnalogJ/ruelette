@@ -8,7 +8,7 @@ export class ApiService {
 
   constructor(private http: Http) { }
 
-  connectServiceUrl(serviceType): Observable<Object>  {
+  connectServiceUrl(serviceType): Observable<any>  {
     return this.http.get(this.apiBaseUrl + 'connect/' + serviceType)
         .map(this.extractData)
         .catch(this.handleError);

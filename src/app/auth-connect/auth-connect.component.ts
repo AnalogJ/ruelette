@@ -15,7 +15,7 @@ export class AuthConnectComponent implements OnInit {
   connectTripit(){
     this.apiService.connectServiceUrl('tripit')
         .subscribe(
-            data => window.location.href = data.url,
+            data => {window.location.href = data.url},
             error => console.log(error)
         )
     console.log('CONNECT TIPIT CLICKED')
