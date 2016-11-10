@@ -11,6 +11,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AuthConnectComponent } from './auth-connect/auth-connect.component';
 import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 
+import { ApiService } from './api.service'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +38,7 @@ import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
       { path: '**', redirectTo: 'dashboard' }
     ])
   ],
-  providers: [],
+  providers: [ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
