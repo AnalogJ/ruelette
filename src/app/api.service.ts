@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers, RequestOptions} from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 
 @Injectable()
@@ -13,6 +13,17 @@ export class ApiService {
         .map(this.extractData)
         .catch(this.handleError);
   }
+
+  callbackWithToken(serviceType, postData): Observable<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(this.apiBaseUrl + 'callback/' + serviceType, postData, options)
+        .map(this.extractData)
+        .catch(this.handleError);
+  }
+
+
 
 
   private extractData(res: Response) {

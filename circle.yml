@@ -10,9 +10,8 @@ general:
 dependencies:
   override:
     - npm install npm@latest -g
-    - npm install -g angular-cli
     - npm install
 
 test:
   override:
-    - ng github-pages:deploy --message "Autodeploy gh-pages" #--base-href "/dashboard"
+    - ng github-pages:deploy --message "Autodeploy gh-pages" --base-href "/"
