@@ -15,4 +15,4 @@ dependencies:
 
 test:
   override:
-    - ng github-pages:deploy --message "Autodeploy gh-pages" --base-href "/dashboard"
+    - ng github-pages:deploy --message "Autodeploy gh-pages" #--base-href "/dashboard"

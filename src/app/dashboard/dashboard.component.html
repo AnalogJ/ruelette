@@ -1,0 +1,30 @@
+<!-- this creates a google map on the page with the given lat/lng from -->
+<!-- the component as the initial center of the map: -->
+
+<sebm-google-map [latitude]="lat" [longitude]="lng">
+    <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
+</sebm-google-map>
+
+<div class="container">
+    <div class="row">
+        <div class="col s2 offset-s10">
+            <ul materialize="collapsible" class="collapsible menu-controls" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+                    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+                    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+                    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
