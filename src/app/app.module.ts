@@ -12,6 +12,7 @@ import { AuthConnectComponent } from './auth-connect/auth-connect.component';
 import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 
 import { ApiService } from './api.service'
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { ApiService } from './api.service'
       { path: '**', redirectTo: 'dashboard' }
     ])
   ],
-  providers: [ApiService],
+  providers: [ApiService, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

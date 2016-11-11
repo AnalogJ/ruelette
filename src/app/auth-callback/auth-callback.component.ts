@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service'
 import {ActivatedRoute} from '@angular/router';
+import { CookieService } from 'angular2-cookie/core';
 
 
 @Component({
@@ -11,7 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 export class AuthCallbackComponent implements OnInit {
 
 
-  constructor(private apiService: ApiService, private activatedRoute: ActivatedRoute) { }
+  constructor(private apiService: ApiService, private cookieService:CookieService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     console.log('GETTING QUERY STRING PARAMS');
@@ -20,7 +21,10 @@ export class AuthCallbackComponent implements OnInit {
 
     this.apiService.callbackWithToken(this.activatedRoute.snapshot.params['serviceType'], this.activatedRoute.snapshot.queryParams)
         .subscribe(
-            data => console.log(data),
+            jwt_data => {
+                console.log(jwt_data)
+                this.cookieService.put('RUELETTE_AUTH',jwt_data)
+            },
             error => console.log(error)
         );
     console.log('CALLBACK')
