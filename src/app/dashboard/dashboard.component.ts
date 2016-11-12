@@ -43,6 +43,11 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  addGoogleSearchLayerOnMap(search_terms, lat_lng){
+
+  }
+
+
   toggleTripitTripLayerOnMap(trip_details) {
 
     if(!trip_details.selected){
@@ -71,49 +76,81 @@ export class DashboardComponent implements OnInit {
           console.log("GOT THE TRIP DETAILS")
 
           // here are all the Tripit object types that we can map
-          var types = ['AirObject','ActivityObject','CarObject','CruiseObject','LodgingObject','NoteObject','RailObject','RestaurantObject','TransportObject'];
+          //TODO: these should be enums/constants
+          var types = [
+            {
+              type:'AirObject',
+              marker:'marker_plane.png'
+            },{
+              type:'ActivityObject',
+              marker:'marker_eye.png'
+            },{
+              type:'CarObject',
+              marker: 'marker_car.png'
+            },{
+              type:'CruiseObject',
+              marker: 'marker_ship.png'
+            },{
+              type:'LodgingObject',
+              marker: 'marker_home.png'
+            },{
+              type:'NoteObject',
+              marker: 'marker_star.png',
+            },{
+              type:'RailObject',
+              marker: 'marker_train.png'
 
-          for(let type of types){
-            if(!data[type]){
-              console.log("COULD NOT FIND TYPE:" + type)
+            },{
+              type:'RestaurantObject',
+              marker: 'marker_food.png'
+
+            },{
+              type:'TransportObject',
+              marker: 'marker_bus.png'
+
+            }];
+
+          for(let type_enum of types){
+            if(!data[type_enum.type]){
+              console.log("COULD NOT FIND TYPE:" + type_enum.type)
               continue
             }
 
             //lets clean up the data returned by Tripit, sometimes its a bit messy.
-            if(!Array.isArray(data[type])){
-              data[type] = [data[type]] //if there is only one item, make sure it is inside an array.
+            if(!Array.isArray(data[type_enum.type])){
+              data[type_enum.type] = [data[type_enum.type]] //if there is only one item, make sure it is inside an array.
             }
 
             //process/add the tripit item to the map.
 
-            for(let entry of data[type]){
-              if((type == 'ActivityObject') || (type == 'CarObject') || (type == 'CruiseObject') || (type == 'LodgingObject') || (type == 'NoteObject') || (type == 'RailObject') || (type == 'RestaurantObject')){
+            for(let entry of data[type_enum.type]){
+              if((type_enum.type == 'ActivityObject') || (type_enum.type == 'CarObject') || (type_enum.type == 'CruiseObject') || (type_enum.type == 'LodgingObject') || (type_enum.type == 'NoteObject') || (type_enum.type == 'RailObject') || (type_enum.type == 'RestaurantObject')){
                 var marker = {
-                  label: entry.display_name,
+                  iconUrl: '/assets/img/markers/black/'+type_enum.marker,
                   lat: parseFloat(entry.Address.latitude),
                   lng: parseFloat(entry.Address.longitude)
                 }
 
-                if(marker.label && marker.lat && marker.lng){
+                if(marker.iconUrl && marker.lat && marker.lng){
                   console.log("PUSHING MARKER")
                   console.dir(marker)
                   layer_markers.push(marker)
                 }
               }
 
-              else if(type == 'AirObject'){
+              else if(type_enum.type == 'AirObject'){
                 if(!Array.isArray(entry.Segment)){
                   entry.Segment = [entry.Segment] //make sure that Segment is an array.
                 }
                 for(let segment of entry.Segment){
                   var start_airport_marker = {
-                    label: segment.start_airport_code,
+                    iconUrl: '/assets/img/markers/black/'+type_enum.marker,
                     lat: parseFloat(segment.start_airport_latitude),
                     lng: parseFloat(segment.start_airport_longitude)
                   }
 
                   var end_airport_marker = {
-                    label: segment.end_airport_code,
+                    iconUrl: '/assets/img/markers/black/'+type_enum.marker,
                     lat: parseFloat(segment.end_airport_latitude),
                     lng: parseFloat(segment.end_airport_longitude)
                   }
