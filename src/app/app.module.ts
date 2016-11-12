@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { RouterModule }   from '@angular/router';
 import { AgmCoreModule } from 'angular2-google-maps/core';
-import { MaterializeModule } from 'angular2-materialize';
+import {Ng2BootstrapModule} from 'ng2-bootstrap/ng2-bootstrap';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthConnectComponent } from './auth-connect/auth-connect.component';
@@ -26,7 +26,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
     BrowserModule,
     FormsModule,
     HttpModule,
-    MaterializeModule,
+    Ng2BootstrapModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB694dIrwnp4s9MrjrUi6w4_BEUvxh3FkU'
     }),

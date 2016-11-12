@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions} from '@angular/http';
+import { Http, Response, Headers, RequestOptions, URLSearchParams} from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
+import { CookieService } from 'angular2-cookie/core';
 
 @Injectable()
 export class ApiService {
   private apiBaseUrl = 'https://api.ruelette.com/dev/';  // URL to web API
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private cookieService: CookieService) { }
 
   connectServiceUrl(serviceType): Observable<any>  {
     return this.http.get(this.apiBaseUrl + 'connect/' + serviceType)
@@ -23,6 +24,26 @@ export class ApiService {
         .catch(this.handleError);
   }
 
+
+  tripitFindAllTrips(): Observable<any> {
+    // Parameters obj-
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('auth', this.cookieService.get('RUELETTE_AUTH'));
+
+    return this.http.get(this.apiBaseUrl + 'external/tripit/trips',{search: params})
+        .map(this.extractData)
+        .catch(this.handleError);
+  }
+
+  tripitFindOneTrip(trip_id): Observable<any> {
+    // Parameters obj-
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('auth', this.cookieService.get('RUELETTE_AUTH'));
+
+    return this.http.get(this.apiBaseUrl + 'external/tripit/trips/' + trip_id,{search: params})
+        .map(this.extractData)
+        .catch(this.handleError);
+  }
 
 
 

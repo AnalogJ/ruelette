@@ -1,30 +1,61 @@
-<!-- this creates a google map on the page with the given lat/lng from -->
-<!-- the component as the initial center of the map: -->
-
 <sebm-google-map [latitude]="lat" [longitude]="lng">
-    <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
+
+
+    <sebm-google-map-marker
+            *ngFor="let m of markers; let i = index"
+            [latitude]="m.lat"
+            [longitude]="m.lng"
+            [label]="m.label">
+
+        <sebm-google-map-info-window>
+            <strong>{{ m.label }}</strong>
+        </sebm-google-map-info-window>
+
+    </sebm-google-map-marker>
+
+
 </sebm-google-map>
 
-<div class="container">
+<div class="container-fluid">
+
     <div class="row">
-        <div class="col s1 offset-s11">
-            <ul materialize="collapsible" class="collapsible menu-controls" data-collapsible="accordion">
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
-                    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
-                    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
-                    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                </li>
-            </ul>
+        <div class="col-lg-offset-2 col-lg-8">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1"></span>
+                <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1">
+            </div>
         </div>
     </div>
 
-</div>
+    <div class="row">
 
+        <div class="col-lg-2">
+
+            <accordion [closeOthers]="oneAtATime">
+                <accordion-group heading="TripIt">
+                    This content is straight in the template.
+                    <div *ngFor="let trip of tripit_trips">
+                        <label>
+                            <input type="checkbox" [(ngModel)]="trip.selected"  (ngModelChange)="toggleTripitTripLayerOnMap(trip)">
+                            {{ trip.display_name }}
+                        </label>
+
+                        </div>
+
+                </accordion-group>
+
+                <accordion-group heading="Google">
+                    <p>Click here to connect to Google</p>
+                </accordion-group>
+                <accordion-group heading="AirBnB">
+                </accordion-group>
+
+            </accordion>
+        </div>
+
+
+    </div>
+
+
+</div>
 
