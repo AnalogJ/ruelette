@@ -19,6 +19,12 @@ export class DashboardComponent implements OnInit {
   public layer_names: Array<string> = [];
 
 
+  //search filters
+  search_type: string = null; //can be 'latlng', 'text'
+  search_text_find_enabled = true;
+  search_text_near_enabled = true;
+
+
   constructor(private cookieService:CookieService, private router: Router, private apiService:ApiService) { }
 
   ngOnInit() {
@@ -43,8 +49,17 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  addGoogleSearchLayerOnMap(search_terms, lat_lng){
+  setSearchType(search_type){
+    this.search_type = search_type
 
+    if(search_type == 'text'){
+      this.search_text_find_enabled = true;
+      this.search_text_near_enabled = true;
+    }
+    else{
+      this.search_text_near_enabled = false;
+      //make sure the zoom level is low enough that the user sees the search circle.
+    }
   }
 
 

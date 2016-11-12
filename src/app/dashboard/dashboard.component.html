@@ -21,9 +21,15 @@
             <sebm-google-map-polyline-point [latitude]="poly.end.lat" [longitude]="poly.end.lng">
             </sebm-google-map-polyline-point>
         </sebm-google-map-polyline>
+
     </template>
 
-
+    <sebm-google-map-circle *ngIf="!search_text_near_enabled" [latitude]="lat" [longitude]="lng"
+                            [radius]="5000"
+                            [fillColor]="'red'"
+                            [circleDraggable]="true"
+                            [editable]="true">
+    </sebm-google-map-circle>
 
 
 </sebm-google-map>
@@ -35,18 +41,31 @@
             <div class="input-group">
                 <div class="input-group-btn" dropdown [(isOpen)]="isopen">
                     <button id="single-button" type="button" class="btn btn-default" dropdownToggle>
-                        Search by <span class="caret"></span>
+                        <span class="caret"></span>
+
+                        <template [ngIf]="search_type == null">
+                            Search By?
+                        </template>
+
+                        <template [ngIf]="search_type == 'text'">
+                            Text Search:
+                        </template>
+
+                        <template [ngIf]="search_type == 'latlng'">
+                            Lat/Long Search:
+                        </template>
                     </button>
                     <ul dropdownMenu role="menu" aria-labelledby="single-button">
-                        <li role="menuitem"><a class="dropdown-item" href="#">Search by Name</a></li>
-                        <li role="menuitem"><a class="dropdown-item" href="#">Search by Lat/Long</a></li>
+                        <li role="menuitem"><a class="dropdown-item" (click)="setSearchType('text')">Text Search</a></li>
+                        <li role="menuitem"><a class="dropdown-item" (click)="setSearchType('latlng')">Lat/Long Search</a></li>
                     </ul>
                 </div>
 
-
-
-                <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1">
+                <input *ngIf="search_text_find_enabled" type="text" class="form-control" placeholder="Find: Hotels, Restaurants, Things to Do" aria-describedby="basic-addon1">
+                <span *ngIf="search_text_near_enabled" class="input-group-btn" style="width:0px;"></span>
+                <input *ngIf="search_text_near_enabled" type="text" class="form-control" placeholder="Near: Enter a Destination" style="margin-left:-1px" />
             </div>
+
         </div>
     </div>
 
