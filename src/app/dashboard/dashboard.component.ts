@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'angular2-cookie/core';
 import {Router} from '@angular/router'
 import { ApiService } from '../api.service'
+import { AgmCoreModule, LatLngLiteral } from 'angular2-google-maps/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,8 +11,10 @@ import { ApiService } from '../api.service'
 })
 export class DashboardComponent implements OnInit {
   title: string = 'My first angular2-google-maps project';
-  lat: number = 51.678418;
-  lng: number = 7.809007;
+  map_lat: number = 51.678418;
+  map_lng: number = 7.809007;
+  map_zoom: number = 10;
+
 
   public tripit_trips:Array<any> = [];
 
@@ -21,9 +24,9 @@ export class DashboardComponent implements OnInit {
 
   //search filters
   search_type: string = null; //can be 'latlng', 'text'
-  search_text_find_enabled = true;
-  search_text_near_enabled = true;
-
+  search_text_find_enabled: boolean = true;
+  search_text_near_enabled: boolean = true;
+  search_latlong_radius: number = 10000; //10km
 
   constructor(private cookieService:CookieService, private router: Router, private apiService:ApiService) { }
 
@@ -46,8 +49,15 @@ export class DashboardComponent implements OnInit {
         },
         error => console.log(error)
     )
-
   }
+
+  //Map event handlers
+  mapOnCenterChange(latlng:LatLngLiteral){
+    this.map_lat = latlng.lat;
+    this.map_lng = latlng.lng
+  }
+
+
 
   setSearchType(search_type){
     this.search_type = search_type
@@ -59,6 +69,11 @@ export class DashboardComponent implements OnInit {
     else{
       this.search_text_near_enabled = false;
       //make sure the zoom level is low enough that the user sees the search circle.
+      console.log("MAP ZOOM", this.map_zoom)
+      if(this.map_zoom <10){
+        console.log("CHANGING MAP ZOOM TO 10")
+        this.map_zoom = 10
+      }
     }
   }
 
@@ -79,8 +94,8 @@ export class DashboardComponent implements OnInit {
 
     //this function should be called whenever the
     console.log(trip_details)
-    this.lat = parseFloat(trip_details.primary_location.latitude);
-    this.lng = parseFloat(trip_details.primary_location.longitude);
+    this.map_lat = parseFloat(trip_details.primary_location.latitude);
+    this.map_lng = parseFloat(trip_details.primary_location.longitude);
 
     this.apiService.tripitFindOneTrip(trip_details.id).subscribe(
         data => {

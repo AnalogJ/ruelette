@@ -1,4 +1,4 @@
-<sebm-google-map [latitude]="lat" [longitude]="lng">
+<sebm-google-map [latitude]="map_lat" [longitude]="map_lng" [zoom]="map_zoom" (centerChange)="mapOnCenterChange($event)">
 
 
     <template ngFor let-layer_name [ngForOf]="layer_names">
@@ -24,8 +24,8 @@
 
     </template>
 
-    <sebm-google-map-circle *ngIf="!search_text_near_enabled" [latitude]="lat" [longitude]="lng"
-                            [radius]="5000"
+    <sebm-google-map-circle *ngIf="!search_text_near_enabled" [latitude]="map_lat" [longitude]="map_lng"
+                            [radius]="search_latlong_radius"
                             [fillColor]="'red'"
                             [circleDraggable]="true"
                             [editable]="true">
@@ -100,42 +100,42 @@
                 <div class="row">
                     <div class="form-group col-lg-2">
                         <div class="input-group">
-                        <span class="input-group-addon">
-                            <input type="checkbox">
-                        </span>
+                            <span class="input-group-addon">
+                                <input type="checkbox" checked>
+                            </span>
                             <button type="button" class="btn btn-default">Google</button>
                         </div><!-- /input-group -->
                     </div>
 
                     <div class="form-group col-lg-2">
 
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <input type="checkbox">
-                        </span>
-                        <button type="button" class="btn btn-default">AirBnB</button>
-                    </div><!-- /input-group -->
-</div>
+                        <div class="input-group disabled">
+                            <span class="input-group-addon">
+                                <input type="checkbox" disabled>
+                            </span>
+                            <button type="button" class="btn btn-default disabled">AirBnB</button>
+                        </div><!-- /input-group -->
+                    </div>
 
                     <div class="form-group col-lg-2">
 
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <input type="checkbox">
-                        </span>
-                        <button type="button" class="btn btn-default">TripAdvisor</button>
-                    </div><!-- /input-group -->
-</div>
+                        <div class="input-group disabled">
+                            <span class="input-group-addon">
+                                <input type="checkbox" disabled>
+                            </span>
+                            <button type="button" class="btn btn-default disabled">TripAdvisor</button>
+                        </div><!-- /input-group -->
+                    </div>
 
                     <div class="form-group col-lg-2">
 
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <input type="checkbox">
-                        </span>
-                        <button type="button" class="btn btn-default">Yelp</button>
-                    </div><!-- /input-group -->
-                        </div>
+                        <div class="input-group disabled">
+                            <span class="input-group-addon">
+                                <input type="checkbox" disabled>
+                            </span>
+                            <button type="button" class="btn btn-default disabled">Yelp</button>
+                        </div><!-- /input-group -->
+                    </div>
                 </div>
             </form>
         </div>
