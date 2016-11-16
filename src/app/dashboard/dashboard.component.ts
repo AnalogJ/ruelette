@@ -25,8 +25,21 @@ export class DashboardComponent implements OnInit {
   //search filters
   search_type: string = null; //can be 'latlng', 'text'
   search_text_find_enabled: boolean = true;
+  search_text_find: string = '';
   search_text_near_enabled: boolean = true;
+  search_text_near: string = '';
+  search_lat: number;
+  search_lng: number;
   search_latlong_radius: number = 10000; //10km
+
+  search_google_enabled: boolean = true;
+  search_google: boolean = false;
+  search_airbnb_enabled: boolean = true;
+  search_airbnb: boolean = false;
+  search_tripadvisor_enabled: boolean = false;
+  search_tripadvisor: boolean = false;
+  search_yelp_enabled: boolean = false;
+  search_yelp: boolean = false
 
   constructor(private cookieService:CookieService, private router: Router, private apiService:ApiService) { }
 
@@ -51,13 +64,26 @@ export class DashboardComponent implements OnInit {
     )
   }
 
-  //Map event handlers
+    //Map event handlers
   mapOnCenterChange(latlng:LatLngLiteral){
     this.map_lat = latlng.lat;
-    this.map_lng = latlng.lng
+    this.map_lng = latlng.lng;
+    this.search_lat = latlng.lat;
+    this.search_lng = latlng.lng;
   }
 
 
+  searchLatLngRadiusChange(radius:number){
+    this.search_latlong_radius = radius;
+    if(radius> 10000){
+        console.log("RADIUS TOO LARGE", radius)
+      this.search_latlong_radius = 10000; //search radius cannot be larger than 10km.
+    }
+  }
+  searchLatLngCenterChange(latlng:LatLngLiteral){
+    this.search_lat = latlng.lat;
+    this.search_lng = latlng.lng;
+  }
 
   setSearchType(search_type){
     this.search_type = search_type
@@ -67,7 +93,10 @@ export class DashboardComponent implements OnInit {
       this.search_text_near_enabled = true;
     }
     else{
+      this.search_lat = this.map_lat;
+      this.search_lng = this.map_lng;
       this.search_text_near_enabled = false;
+      this.search_latlong_radius = 10000;
       //make sure the zoom level is low enough that the user sees the search circle.
       console.log("MAP ZOOM", this.map_zoom)
       if(this.map_zoom <10){
@@ -76,6 +105,54 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+
+  search(){
+    console.log("SEARCH CLICKED!!")
+
+    //cleanup previous search results.
+    for(let layer_name of this.layer_names){
+      if(layer_name.startsWith('search:')){
+        this.layer_names.splice(this.layer_names.indexOf(layer_name), 1) //remove this search layer from the layer_names array
+        delete this.layers[layer_name] //remove this search layer from the layers object
+      }
+    }
+
+    if(this.search_type == 'text'){
+
+    }
+    else if(this.search_type == 'latlng'){
+      console.log("SEARCH TYPE IS CORRECT")
+      if(this.search_airbnb){
+        this.toggleAirbnbSearchLayerOnMap()
+      }
+    }
+  }
+
+  toggleAirbnbSearchLayerOnMap(){
+    this.apiService.airbnbSearchByLatLng(this.search_lat, this.search_lng, this.search_latlong_radius).subscribe(
+        data => {
+          var layer_markers = [];
+          for(let search_result of data.results_json.search_results){
+            layer_markers.push({
+              iconUrl: '/assets/img/markers/black/marker_home.png',
+              lat: search_result.listing.lat,
+              lng: search_result.listing.lng,
+              label: search_result.listing.name
+            })
+          }
+
+          console.log(layer_markers);
+          this.layers['search:airbnb'] = {
+            markers: layer_markers,
+            polylines: []
+          }
+          this.layer_names.push('search:airbnb')
+
+        } ,
+        error => console.log(error)
+    )
+  }
+
 
 
   toggleTripitTripLayerOnMap(trip_details) {

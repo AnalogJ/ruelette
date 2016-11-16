@@ -1,4 +1,4 @@
-<sebm-google-map [latitude]="map_lat" [longitude]="map_lng" [zoom]="map_zoom" (centerChange)="mapOnCenterChange($event)">
+<sebm-google-map [(latitude)]="map_lat" [(longitude)]="map_lng" [(zoom)]="map_zoom" (centerChange)="mapOnCenterChange($event)">
 
 
     <template ngFor let-layer_name [ngForOf]="layer_names">
@@ -24,11 +24,14 @@
 
     </template>
 
-    <sebm-google-map-circle *ngIf="!search_text_near_enabled" [latitude]="map_lat" [longitude]="map_lng"
-                            [radius]="search_latlong_radius"
+    <sebm-google-map-circle *ngIf="!search_text_near_enabled" [(latitude)]="search_lat" [(longitude)]="search_lng"
+                            [(radius)]="search_latlong_radius"
                             [fillColor]="'red'"
                             [circleDraggable]="true"
-                            [editable]="true">
+                            [editable]="true"
+                            (radiusChange)="searchLatLngRadiusChange($event)"
+                            (centerChange)="searchLatLngCenterChange($event)"
+    >
     </sebm-google-map-circle>
 
 
@@ -61,9 +64,14 @@
                     </ul>
                 </div>
 
-                <input *ngIf="search_text_find_enabled" type="text" class="form-control" placeholder="Find: Hotels, Restaurants, Things to Do" aria-describedby="basic-addon1">
+                <input *ngIf="search_text_find_enabled" [(ngModel)]="search_text_find" type="text" class="form-control" placeholder="Find: Hotels, Restaurants, Things to Do" aria-describedby="basic-addon1">
                 <span *ngIf="search_text_near_enabled" class="input-group-btn" style="width:0px;"></span>
-                <input *ngIf="search_text_near_enabled" type="text" class="form-control" placeholder="Near: Enter a Destination" style="margin-left:-1px" />
+                <input *ngIf="search_text_near_enabled" [(ngModel)]="search_text_near"  type="text" class="form-control" placeholder="Near: Enter a Destination" style="margin-left:-1px" />
+                <div class="input-group-btn">
+                    <button class="btn btn-default" (click)="search()">Search</button>
+
+                </div>
+
             </div>
 
         </div>
@@ -99,41 +107,42 @@
             <form class="form-inline" role="form">
                 <div class="row">
                     <div class="form-group col-lg-2">
-                        <div class="input-group">
+                        <div class="input-group" [ngClass]="{'disabled': !search_google_enabled }">
                             <span class="input-group-addon">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" name="search_google" [(ngModel)]="search_google" [disabled]="!search_google_enabled">
                             </span>
-                            <button type="button" class="btn btn-default">Google</button>
+                            <label class="btn btn-default" [ngClass]="{'disabled': !search_google_enabled }">Google</label>
                         </div><!-- /input-group -->
                     </div>
 
                     <div class="form-group col-lg-2">
 
-                        <div class="input-group disabled">
+                        <div class="input-group" [ngClass]="{'disabled': !search_airbnb_enabled }">
                             <span class="input-group-addon">
-                                <input type="checkbox" disabled>
+                                <input type="checkbox" name="search_airbnb"  [(ngModel)]="search_airbnb" [disabled]="!search_airbnb_enabled">
                             </span>
-                            <button type="button" class="btn btn-default disabled">AirBnB</button>
+
+                            <label class="btn btn-default" [ngClass]="{'disabled': !search_airbnb_enabled }">AirBnB</label>
                         </div><!-- /input-group -->
                     </div>
 
                     <div class="form-group col-lg-2">
 
-                        <div class="input-group disabled">
+                        <div class="input-group" [ngClass]="{'disabled': !search_tripadvisor_enabled }">
                             <span class="input-group-addon">
-                                <input type="checkbox" disabled>
+                                <input type="checkbox" name="search_tripadvisor"  [(ngModel)]="search_tripadvisor" [disabled]="!search_tripadvisor_enabled">
                             </span>
-                            <button type="button" class="btn btn-default disabled">TripAdvisor</button>
+                            <label class="btn btn-default" [ngClass]="{'disabled': !search_tripadvisor_enabled }">TripAdvisor</label>
                         </div><!-- /input-group -->
                     </div>
 
                     <div class="form-group col-lg-2">
 
-                        <div class="input-group disabled">
+                        <div class="input-group" [ngClass]="{'disabled': !search_yelp_enabled }">
                             <span class="input-group-addon">
-                                <input type="checkbox" disabled>
+                                <input type="checkbox" name="search_yelp"  [(ngModel)]="search_yelp" [disabled]="!search_yelp_enabled">
                             </span>
-                            <button type="button" class="btn btn-default disabled">Yelp</button>
+                            <label class="btn btn-default" [ngClass]="{'disabled': !search_yelp_enabled }">Yelp</label>
                         </div><!-- /input-group -->
                     </div>
                 </div>

@@ -24,6 +24,28 @@ export class ApiService {
         .catch(this.handleError);
   }
 
+  airbnbSearchByLatLng(lat:number, lng:number, radius:number): Observable<any> {
+
+    var cir = new (<any>window).google.maps.Circle()
+    cir.setCenter({lat: lat, lng: lng})
+    cir.setRadius(radius)
+    var bounding_box = cir.getBounds()
+    console.log(bounding_box)
+    // Parameters obj-
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('source', 'map');
+    params.set('sw_lat', bounding_box.getSouthWest().lat());
+    params.set('sw_lng', bounding_box.getSouthWest().lng());
+    params.set('ne_lat', bounding_box.getNorthEast().lat());
+    params.set('ne_lng', bounding_box.getNorthEast().lng());
+    params.set('zoom', '10');
+
+
+    return this.http.get(this.apiBaseUrl + 'external/airbnb/search',{search: params})
+        .map(this.extractData)
+        .catch(this.handleError);
+  }
+
 
   tripitFindAllTrips(): Observable<any> {
     // Parameters obj-
